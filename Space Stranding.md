@@ -46,6 +46,8 @@
 
 ![image-20220324144311940](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220324144311940.png)
 
+![image-20220404174901522](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220404174901522.png)![image-20220404174939508](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220404174939508.png)![image-20220404175341795](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220404175341795.png)![image-20220404180147630](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220404180147630.png)
+
 #### 3，
 
 ## 三、剧情流程与设计
@@ -68,31 +70,28 @@
 
 #### 一、Space 场景部分
 
-- [ ] L - 景深实现
-- [ ] B - 场景搭建（预制/生成）
+- [ ] 景深实现
+- [ ] 场景搭建（预制/生成）
 
 #### 三、操作与玩法
 
-- [ ] B - 角色Space移动
+- [ ] 角色Space移动
 - [ ] 玩家互动和场景资源管理
 
 #### 四、UI部分 - UI Manager
 
-- [ ] B - 路线与地图
-- [ ] B - 其他状态数据
-- [ ] B - 音乐播放器与对应UI
-- [ ] 
+- [ ] 路线与地图
+- [ ] 氧气与燃料
+- [ ] 音乐播放器与对应UI
 - [ ] 系统菜单等UI
 
 #### 五、YarnSpinner与剧情
 
-- [ ] Y - YarnSpinner的使用 
+- [ ] YarnSpinner的使用 
 
 #### 六、系统设计
 
-- [ ] 状态管理系统
 - [ ] 存档系统
-- [ ] 声音系统
-- [ ] 
+- [ ] 声音 音效系统
 - [ ] 成就系统（待）
 - [ ] 收集系统（待）

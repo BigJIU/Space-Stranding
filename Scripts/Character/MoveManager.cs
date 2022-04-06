@@ -15,17 +15,31 @@ public class MoveManager : MonoBehaviour
     public float m_rotateMaxDegree;
 
     private float currentSpeed = 0;
-    // Start is called before the first frame update
+    
+    //test for topdown
+    private GameObject back;
+    
+    
     void Start()
     {
+        back = GameObject.Find("back0");
         rigi = this.GetComponent<Rigidbody2D>();
         transAs = transform.GetChild(0).GetComponent<Transform>();
 
     }
 
+    void cameraController()
+    {
+        back.transform.position = transform.position - new Vector3(0, 11, 0);
+        GameManager.Camera.transform.position = new Vector3(0,9,0)+transform.position;
+        GameManager.Camera.transform.rotation = Quaternion.Euler(90 - 15*(1-(m_moveMaxSpeed-currentSpeed)/m_moveMaxSpeed),0,90);
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
+        cameraController();
+        
         if (Input.GetKey("r")) transform.position = new Vector3(0,0,-10);
         if (Input.GetKey("w"))
         {
@@ -43,7 +57,7 @@ public class MoveManager : MonoBehaviour
         {
             yAxisMove(-1);
         }
-        else
+        else if(!Input.GetKey("w"))
         {
             recoverDirection();
         }
