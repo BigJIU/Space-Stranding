@@ -10,19 +10,18 @@ public class MoveManager : MonoBehaviour
 
     public float m_moveMaxSpeed;
     public float m_moveAccSpeed;
+    public float m_moveDelSpeed;
     public float m_rotateSpeed;
     public float m_rotateDelaySpeed;
     public float m_rotateMaxDegree;
 
     private float currentSpeed = 0;
     
-    //test for topdown
-    private GameObject back;
+
     
     
     void Start()
     {
-        back = GameObject.Find("back0");
         rigi = this.GetComponent<Rigidbody2D>();
         transAs = transform.GetChild(0).GetComponent<Transform>();
 
@@ -30,7 +29,6 @@ public class MoveManager : MonoBehaviour
 
     void cameraController()
     {
-        back.transform.position = transform.position - new Vector3(0, 11, 0);
         GameManager.Camera.transform.position = new Vector3(0,9,0)+transform.position;
         GameManager.Camera.transform.rotation = Quaternion.Euler(90 - 15*(1-(m_moveMaxSpeed-currentSpeed)/m_moveMaxSpeed),0,90);
     }
@@ -38,29 +36,27 @@ public class MoveManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        cameraController();
-        
+        transform.Translate(spaceForward()* Time.deltaTime * currentSpeed, Space.Self);
+        //cameraController();
         if (Input.GetKey("r")) transform.position = new Vector3(0,0,-10);
-        if (Input.GetKey("w"))
+
+        if (Input.GetKey("s"))
         {
-            yAxisMove(0);
+            recoverSpeed(m_moveAccSpeed);
+        }
+        else
+        {
+            if (Input.GetKey("w")) yAxisMove(0);
+            if (Input.GetKey("a")) yAxisMove(1);
+            if (Input.GetKey("d")) yAxisMove(-1);
+            
+            if(!Input.GetKey("w")&!Input.GetKey("d")&!Input.GetKey("a"))
+            {
+                recoverRotate();
+                recoverSpeed(m_moveDelSpeed);
+            }  
         }
         
-        if(Input.GetKey("a"))
-        {
-            if (Input.GetKey("d"))
-            {
-                yAxisMove(0);
-            }
-            yAxisMove(1);
-        }else if (Input.GetKey("d"))
-        {
-            yAxisMove(-1);
-        }
-        else if(!Input.GetKey("w"))
-        {
-            recoverDirection();
-        }
         // if (Input.GetKey("a"))
         // {
         //     //transform.Rotate(Vector3.up * m_rotateSpeed * Time.deltaTime, Space.Self);
@@ -83,13 +79,16 @@ public class MoveManager : MonoBehaviour
         // }
     }
     private void yAxisMove(int dir){
-        transform.Translate(spaceForward()* Time.deltaTime * currentSpeed, Space.Self);
-        if (currentSpeed < m_moveMaxSpeed)
+
+        if (dir == 0)
         {
-            currentSpeed += Time.deltaTime * m_moveAccSpeed;
+            if (currentSpeed < m_moveMaxSpeed)
+            {
+                currentSpeed += Time.deltaTime * m_moveAccSpeed;
+            }
         }
-        if (dir == 0) { } //forward at now direction
-        else if (dir == 1)//turn left 
+        //forward at now direction
+        if (dir == 1)//turn left 
         {
             if (yEulerAngel() > -m_rotateMaxDegree)
             {
@@ -103,26 +102,12 @@ public class MoveManager : MonoBehaviour
                 transAs.Rotate(Vector3.up, m_rotateSpeed * Time.deltaTime);	
             }
         }
-        else
-        {
-            
-        }
+
     }
-/// <summary>
-/// recover speed to 0, rotation to 0
-/// </summary>
-    private void recoverDirection()
+
+    private void recoverRotate()
     {
-        //speed recover
-        if (currentSpeed > 0)
-        {
-            transform.Translate(spaceForward()* Time.deltaTime * currentSpeed, Space.Self);
-            currentSpeed -= m_moveAccSpeed * Time.deltaTime;
-        }
-        else
-        {
-            currentSpeed = 0;
-        }
+        
         //rotation recover
         if (Math.Abs(yEulerAngel()) > m_rotateDelaySpeed * Time.deltaTime)
         {
@@ -133,6 +118,18 @@ public class MoveManager : MonoBehaviour
             transAs.localRotation = new Quaternion(0,0,0,0);
         }
 
+    }
+
+    private void recoverSpeed(float delay)
+    {
+        if (currentSpeed > 0)
+        {
+            currentSpeed -= delay * Time.deltaTime;
+        }
+        else
+        {
+            currentSpeed = 0;
+        }
     }
 
     private Vector3 spaceForward()
